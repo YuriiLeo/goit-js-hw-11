@@ -1,6 +1,8 @@
 import '../css/styles.css';
 import Pixabay from './pixabayAPI';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 const refs = {
   searchForm: document.querySelector(".search-form"),
@@ -22,18 +24,18 @@ refs.btnLoadMore.addEventListener("click", onLoadMore);
 
  function onSearch(evt) {
   evt.preventDefault(pixabay.searchQuery);
-  refs.btnLoadMore.classList.remove("is-hidden");
-  pixabay.searchQuery = evt.currentTarget.elements.searchQuery.value;
   
+  pixabay.searchQuery = evt.currentTarget.elements.searchQuery.value;
+   pixabay.resetPage();
+   removeData();
+   
   if (pixabay.searchQuery === "") {
     return Notify.warning("Please enter a more specific name.");
   }
-  
+  refs.btnLoadMore.classList.remove("is-hidden");
   //  Notify.warning(`Hooray! We found ${pixabay.totalHitsThis}images.`);
    
-  pixabay.resetPage();
   fetchArticlesAndRender();
-  removeData();
   return;
 }
 
@@ -58,20 +60,22 @@ async function fetchArticlesAndRender() {
 function renderGallery(data) {
   
   const markupPictures = data.hits.reduce((acc, item) => (acc += `
-      <div class="photo-card">
-        <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy"/>
+      <div class="photo-card"> 
+      <a href="${item.largeImageURL}" class="galerry-item">
+      <img class="gallery-img" src="${item.webformatURL}" alt="${item.tags}" loading="lazy"/>
+      </a>
         <div class="info">
           <p class="info-item">
-            <b>Likes${item.likes}</b>
+            <b>Likes <font size="1px" color="#eaee3c" face="Arial">${item.likes}</font> </b>
           </p>
           <p class="info-item">
-            <b>Views${item.views}</b>
+            <b>Views <font size="1px" color="#eaee3c" face="Arial">${item.views}</font> </b>
           </p>
           <p class="info-item">
-            <b>Comments${item.comments}</b>
+            <b>Comments <font size="1px" color="#eaee3c" face="Arial">${item.comments}</font></b>
           </p>
           <p class="info-item">
-            <b>Downloads${item.downloads}</b>
+            <b>Downloads <font size="1px" color="#eaee3c" face="Arial">${item.downloads}</font></b>
           </p>
         </div>
       </div>
@@ -79,6 +83,7 @@ function renderGallery(data) {
 
   refs.gallery.insertAdjacentHTML("beforeend", markupPictures);
 }
+
 
 
 function removeData() {

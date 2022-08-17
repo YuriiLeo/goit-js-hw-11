@@ -1,5 +1,6 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-const axios = require('axios').default;
+import axios from "axios";
+// const axios = require('axios').default;
 
 const KEY = "29252112-5cfbcf527b6aa7a1ff4768ca5";
 const BASE_URL = "https://pixabay.com/api/";
@@ -16,9 +17,9 @@ export default class PixabayAPI {
         
   const url = `${BASE_URL}?key=${KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
   
-      const response = await fetch(url);
-      const data = await response.json();
-
+      const response = await axios.get(url);
+      const data = await response.data;
+      
           this.totalHitsThis = data.totalHits;
           if (data.hits.length === 0) {
              Notify.warning("Sorry, there are no images matching your search query. Please try again.");
@@ -39,12 +40,4 @@ export default class PixabayAPI {
     set query(newQuery) {
         this.searchQuery = newQuery;
     }
-
-    //  get page() {
-    //     return this.page;
-    // }
-
-    // set page(newPage) {
-    //     this.page = newPage;
-    // }
 }
