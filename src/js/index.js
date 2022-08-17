@@ -15,6 +15,8 @@ const pixabay = new Pixabay();
 
 isHidden();
 
+const lightbox = new SimpleLightbox(".galerry-item");
+
 function isHidden() {
   refs.btnLoadMore.classList.add("is-hidden");
 }
@@ -66,22 +68,23 @@ function renderGallery(data) {
       </a>
         <div class="info">
           <p class="info-item">
-            <b>Likes <font size="1px" color="#eaee3c" face="Arial">${item.likes}</font> </b>
+            <b>Likes <font size="2px" color="#eaee3c" face="Arial">${item.likes}</font> </b>
           </p>
           <p class="info-item">
-            <b>Views <font size="1px" color="#eaee3c" face="Arial">${item.views}</font> </b>
+            <b>Views <font size="2px" color="#eaee3c" face="Arial">${item.views}</font> </b>
           </p>
           <p class="info-item">
-            <b>Comments <font size="1px" color="#eaee3c" face="Arial">${item.comments}</font></b>
+            <b>Comments <font size="2px" color="#eaee3c" face="Arial">${item.comments}</font></b>
           </p>
           <p class="info-item">
-            <b>Downloads <font size="1px" color="#eaee3c" face="Arial">${item.downloads}</font></b>
+            <b>Downloads <font size="2px" color="#eaee3c" face="Arial">${item.downloads}</font></b>
           </p>
         </div>
       </div>
        `), "");
 
   refs.gallery.insertAdjacentHTML("beforeend", markupPictures);
+  lightbox.refresh();
 }
 
 
