@@ -19,6 +19,24 @@ body {
   margin-bottom: 16px;
 }
 
+.search-form {
+  text-align: center;
+  background: #0b65ed;
+  height: 50px;
+  margin: 0 0 15px 0;
+  padding: 10px;
+}
+
+.input {
+  height: 30px;
+  width: 250px;
+  outline: none;
+  font-size: 18px;
+  border: none;
+  border-radius: 3px;
+  padding-left: 5px;
+}
+
 .load-more {
 
 }
@@ -28,13 +46,41 @@ body {
 }
 
 .gallery {
-
+display: flex;
+flex-wrap: wrap;
+margin: -15px;
 }
 
 .photo-card {
+  width: calc(100vw / 4 - 2 * 15px);
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  
+}
 
+.galerry-item {
+  height: 100%;
+  flex-direction: column;
+  display: flex;
+}
+
+.gallery-img {
+  height: 100%;
 }
 
 .info {
-  
+    border-bottom: 1px solid #eee;
+      border-left: 1px solid #eee;
+      border-right: 1px solid #eee;
+      display: flex;
+      text-align: center;
 }
+
+.info-item {
+      padding: 8px;
+      margin: 0;
+      font-size: 8px;
+      color: #0bb4ed;
+}
+
