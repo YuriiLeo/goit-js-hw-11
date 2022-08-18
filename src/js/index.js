@@ -30,12 +30,11 @@ refs.btnLoadMore.addEventListener("click", onLoadMore);
   pixabay.searchQuery = evt.currentTarget.elements.searchQuery.value;
    pixabay.resetPage();
    removeData();
-   
-  if (pixabay.searchQuery === "") {
-    return Notify.warning("Please enter a more specific name.");
+   if (pixabay.searchQuery === "") {
+     isHidden();
+     return  Notify.failure("Please enter a more specific name.");
   }
   refs.btnLoadMore.classList.remove("is-hidden");
-  //  Notify.warning(`Hooray! We found ${pixabay.totalHitsThis}images.`);
    
   fetchArticlesAndRender();
   return;
@@ -68,16 +67,16 @@ function renderGallery(data) {
       </a>
         <div class="info">
           <p class="info-item">
-            <b>Likes <font size="2px" color="#eaee3c" face="Arial">${item.likes}</font> </b>
+            <b>Likes <br><font size="2px" color="#eaee3c" face="Arial">${item.likes}</font> </b>
           </p>
           <p class="info-item">
-            <b>Views <font size="2px" color="#eaee3c" face="Arial">${item.views}</font> </b>
+            <b>Views <br><font size="2px" color="#eaee3c" face="Arial">${item.views}</font> </b>
           </p>
           <p class="info-item">
-            <b>Comments <font size="2px" color="#eaee3c" face="Arial">${item.comments}</font></b>
+            <b>Comments <br><font size="2px" color="#eaee3c" face="Arial">${item.comments}</font></b>
           </p>
           <p class="info-item">
-            <b>Downloads <font size="2px" color="#eaee3c" face="Arial">${item.downloads}</font></b>
+            <b>Downloads <br><font size="2px" color="#eaee3c" face="Arial">${item.downloads}</font></b>
           </p>
         </div>
       </div>
