@@ -11,6 +11,7 @@ export default class PixabayAPI {
         this.searchQuery = "";
         this.page = 1;
         this.totalHitsThis = 0;
+        this.hitsLength;
     }
 
   async  fetchArticles() {
@@ -20,11 +21,10 @@ export default class PixabayAPI {
       const response = await axios.get(url);
       const data = await response.data;
       
-          this.totalHitsThis = data.totalHits;
-          if (data.hits.length === 0) {
-             Notify.warning("Sorry, there are no images matching your search query. Please try again.");
-          }
-            this.page += 1;
+      this.totalHitsThis = data.totalHits;
+      this.hitsLength = data.hits.length;
+      
+      this.page += 1;
           return data;
    
     }
@@ -39,5 +39,13 @@ export default class PixabayAPI {
 
     set query(newQuery) {
         this.searchQuery = newQuery;
+    }
+
+    get totalH() {
+        return this.searchQuery;
+    }
+
+    set totalH(newTotal) {
+        this.totalHitsThis = newTotal;
     }
 }

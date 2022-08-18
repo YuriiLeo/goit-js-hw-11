@@ -21,24 +21,49 @@ function isHidden() {
   refs.btnLoadMore.classList.add("is-hidden");
 }
 
+function notHidden() {
+  refs.btnLoadMore.classList.remove("is-hidden");
+}
+
 refs.searchForm.addEventListener("submit", onSearch);
 refs.btnLoadMore.addEventListener("click", onLoadMore);
 
- function onSearch(evt) {
+ async function onSearch(evt) {
   evt.preventDefault(pixabay.searchQuery);
-  
   pixabay.searchQuery = evt.currentTarget.elements.searchQuery.value;
    pixabay.resetPage();
    removeData();
+   notHidden();
    if (pixabay.searchQuery === "") {
      isHidden();
      return  Notify.failure("Please enter a more specific name.");
-  }
-  refs.btnLoadMore.classList.remove("is-hidden");
-   
-  fetchArticlesAndRender();
+   }
+  await fetchArticlesAndRender();
+  
+   await notifyTotalHits();
+  // await notifyInvalidRequest();
   return;
 }
+
+// function notifyNoReqyest() {
+//   if (pixabay.searchQuery === "") {
+//      isHidden();
+//      return  Notify.failure("Please enter a more specific name.");
+//    }
+// }
+
+// function notifyInvalidRequest() {
+//    if (pixabay.hitsLength === 0) {
+//       isHidden();
+//       return Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+//   }
+// }
+
+function notifyTotalHits() {
+  if (pixabay.hitsLength !== 0) {
+        return Notify.success(`Hooray! We found ${pixabay.totalHitsThis} images.`);
+      }
+  }
 
 
 function onLoadMore() {
@@ -53,13 +78,17 @@ async function fetchArticlesAndRender() {
     await renderGallery(fetchArticles);
 
   } catch (error) {
+    Notify.failure('Qui timide rogat docet negare');
     console.log(error);
     
   }
 }
 
 function renderGallery(data) {
-  
+  if (pixabay.hitsLength === 0) {
+      isHidden();
+      return Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+  }
   const markupPictures = data.hits.reduce((acc, item) => (acc += `
       <div class="photo-card"> 
       <a href="${item.largeImageURL}" class="galerry-item">
@@ -83,6 +112,7 @@ function renderGallery(data) {
        `), "");
 
   refs.gallery.insertAdjacentHTML("beforeend", markupPictures);
+  
   lightbox.refresh();
 }
 
@@ -95,15 +125,9 @@ function removeData() {
 function totalHitsCaunter() {
   let maxHits = (pixabay.page) * 40;
   let totalHits = pixabay.totalHitsThis;
-  
   if (maxHits >= totalHits) {
-    Notify.warning("We're sorry, but you've reached the end of search results.");
+    Notify.info("We're sorry, but you've reached the end of search results.");
     isHidden();
   }
   return; 
 }
-
-
-// Після першого запиту з кожним новим пошуком отримувати повідомлення, в якому буде написано,
-//  скільки всього знайшли зображень(властивість totalHits).Текст повідомлення - "Hooray! We found totalHits images."
-
